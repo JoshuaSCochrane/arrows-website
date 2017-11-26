@@ -8,6 +8,11 @@ import shell from 'gulp-shell'
 import uglify from 'gulp-uglify'
 
 const paths = {
+  relative: [
+    '../arrows/dist/arrows.js',
+    '../arrows/dist/arrows.es5.js',
+    '../arrows/dist/arrows.min.js'
+  ],
   vendor: [
     'https://github.com/efritz/arrows/releases/download/0.4/arrows.js',
     'https://github.com/efritz/arrows/releases/download/0.4/arrows.es5.js',
@@ -17,6 +22,11 @@ const paths = {
 
 gulp.task('vendor', () => {
   return download(paths.vendor)
+    .pipe(gulp.dest('./public/js'));
+});
+
+gulp.task('relative', () => {
+  return gulp.src(paths.relative, { base: '../arrows/dist/' })
     .pipe(gulp.dest('./public/js'));
 });
 
@@ -53,7 +63,7 @@ gulp.task('minify-css', () => {
 
 gulp.task('build', callback => {
   runSequence(
-    ['vendor', 'minify-html', 'minify-js', 'minify-css'],
+    ['relative', 'minify-html', 'minify-js', 'minify-css'],
     callback,
   );
 });
